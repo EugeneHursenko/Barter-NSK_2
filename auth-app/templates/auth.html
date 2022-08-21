@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title%} {{ title }} {% endblock %}
+{% block content%}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-lg-5 col-md-6 m-auto card p-4">
+            <form action="{{ request.path }}" method="POST" class="card-body">
+                {{ form.csrf_token }}
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <div class="text-center">
+
+
+                    <h5 class="text-primary">{{Вход}}</h5>
+                </div>
+
+                {% if request.path == '/register/' %}
+                <h6>Всё общение будет производиться в Telegram. <br>
+                            Для взаимодействия с участниками бартерного обмена необходимо, чтобы указанный в анкете номер телефона был привязан к аккаунту в Telegram</h6>
+                <div class="form-group mb-3">
+                    {{ form.username(class_="form-control",placeholder="Имя или Ник")}}
+                </div>
+                {% for error in form.username.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor%}
+                {% endif%}
+
+                <div class="form-group mb-3">
+                    {{ form.phone(class_="form-control",placeholder="Телефон")}}
+                </div>
+                {% for error in form.phone.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="phone-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div> {% endfor%}
+                <div class="form-group mb-3">
+                    {{ form.pwd(class_="form-control",placeholder="Пароль")}}
+                </div>
+                {% for error in form.pwd.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div> {% endfor%}
+                {% if request.path == '/register/' %}
+                <div class="form-group mb-3">
+                    {{ form.cpwd(class_="form-control",placeholder="Ещё раз тот же пароль")}}
+                </div>
+                {% for error in form.cpwd.errors %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div> {% endfor%}
+                {% endif %}
+
+
+                {% if request.path == '/register/' %}
+                 <h6> В каких районах г. Новосибирска Вам удобнее всего производить обмен?</h6>
+
+                <label><input type="checkbox" name="ZA" value="Заельцовский"/> Заельцовский</label><br>
+                <label><input type="checkbox" name="KA" value="Калининский"/> Калининский</label><br>
+                <label><input type="checkbox" name="CE" value="Центральный"/> Центральный</label><br>
+                <label><input type="checkbox" name="DZ" value="Дзержинский"/> Дзержинский</label><br>
+                <label><input type="checkbox" name="OK" value="Октябрьский"/> Октябрьский</label><br>
+                <label><input type="checkbox" name="LE" value="Ленинский"/> Ленинский</label><br>
+                <label><input type="checkbox" name="KI" value="Кировский"/> Кировский</label><br>
+                <label><input type="checkbox" name="PE" value="Первомайский"/> Первомайский</label><br>
+                <label><input type="checkbox" name="SO" value="Советский"/> Советский</label><br>
+                <label><input type="checkbox" name="JE" value="Железнодорожный"/> Железнодорожный</label><br>
+                <br>
+                
+                {% endif %}
+                <div class="text-center">
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-block btn-primary mb-3"> {{title}} </button>
+                    </div>
+
+                    <p>
+                        {% if request.path != '/register/' %}
+
+                        <a href="{{url_for('register')}}">Зарегистрироваться</a>
+                        {% else %}
+                        Уже есть аккаунт?
+                        <a href="{{url_for('login')}}">Войти</a>
+                        {% endif %}
+                    </p>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
